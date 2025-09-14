@@ -4,7 +4,7 @@ from datetime import datetime
 from openai import OpenAI
 
 # Replace 'your-api-key-here' with your actual OpenAI API key
-API_KEY = "your-api-key-here"
+API_KEY = "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"
 
 # Initialize OpenAI client with direct API key
 client = OpenAI(api_key=API_KEY)
