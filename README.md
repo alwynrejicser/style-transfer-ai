@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Style Transfer AI - Perfect Stylometry Analyzer
 
 🎯 **Ultimate stylometry analysis system with tri-model support for comprehensive writing style profiling**
