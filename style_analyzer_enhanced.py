@@ -53,7 +53,7 @@ def get_user_model_choice():
     print("AI MODEL SELECTION")
     print("="*50)
     print("Choose your processing type:")
-    print("1. Local Processing (Privacy-focused)")
+    print("1. Local Processing (Run Locally)")
     print("2. Online Processing (Cloud-based)")
     print("0. Exit")
     print("="*50)
