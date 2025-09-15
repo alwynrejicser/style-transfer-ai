@@ -28,6 +28,13 @@
 - **Statistical analysis**: Word frequencies, punctuation patterns, complexity indices
 - Individual file analysis + consolidated profiling
 
+✅ **Cloud Storage Integration**:
+- **Firebase Firestore**: Optional cloud database storage for profiles
+- **Automatic backup**: Profiles saved locally AND in cloud (when configured)
+- **Cross-device access**: Access your stylometric profiles from anywhere
+- **Search and retrieval**: Query profiles by user name and creation date
+- **Privacy-first**: Cloud storage is optional, local-only mode still available
+
 ✅ **Privacy & Flexibility**:
 - Local processing for confidential content
 - Multiple cloud API options (OpenAI, Gemini)
@@ -67,9 +74,19 @@ ollama serve
    GEMINI_API_KEY = "your-gemini-api-key-here"  # Replace with your actual key
    ```
 
+**Firebase Firestore (Optional - Cloud Storage):**
+1. Create a Firebase project at [Firebase Console](https://console.firebase.google.com/)
+2. Enable Firestore Database
+3. Download service account JSON key
+4. Place the key file as `firebase-credentials.json` in project root
+5. Update project ID in the code (replace `'styler-24736'` with your project ID)
+6. See [FIREBASE_SETUP.md](FIREBASE_SETUP.md) for detailed instructions
+
 ### 2. Install Dependencies
 ```bash
-pip install requests openai google-generativeai
+pip install -r requirements.txt
+# Or manually:
+pip install requests openai google-generativeai firebase-admin
 ```
 
 ### 3. Prepare Your Text Samples
@@ -157,6 +174,8 @@ style-transfer-ai/
 ├── IMPLEMENTATION.md                    # Detailed technical documentation
 ├── README.md                           # This file
 ├── futureimprov.md                     # Future improvement plans
+├── FIREBASE_SETUP.md                    # Firebase Firestore setup guide
+├── requirements.txt                    # Python dependencies
 ├── .env.example                        # Environment configuration template
 ├── .gitignore                          # Git ignore for security
 ├── about_my_pet.txt                    # Sample text file 1
@@ -177,6 +196,12 @@ style-transfer-ai/
 - **Turbo Mode**: Quick analysis with optimized parameters
 - **Normal Mode**: Comprehensive deep analysis
 - User choice for processing speed vs thoroughness
+
+☁️ **Firebase Firestore Integration**:
+- **Cloud Database Storage**: Optional backup to Firebase Firestore
+- **Cross-Device Access**: Access profiles from any device
+- **Search & Retrieval**: Query profiles by user and date
+- **Privacy Maintained**: Local storage still default, cloud is optional
 
 🏗️ **Enhanced Architecture**:
 - Streamlined user profile collection (8 essential fields)

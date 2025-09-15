@@ -1,0 +1,10 @@
+# Core dependencies for Style Transfer AI
+requests>=2.28.0
+openai>=1.0.0
+google-generativeai>=0.3.0
+
+# Firebase Firestore integration
+firebase-admin>=6.0.0
+
+# Optional: For better text processing
+nltk>=3.8
