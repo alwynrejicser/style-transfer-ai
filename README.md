@@ -184,7 +184,7 @@ style-transfer-ai/
 └── {name}_stylometric_profile_*.txt    # Your personalized analysis (TXT)
 ```
 
-## What's New in v4.5
+## What's New
 
 🆕 **Personalized Stylometric Fingerprints**:
 - Your name is now collected and used for file naming
@@ -338,8 +338,4 @@ Contributions welcome! Please ensure:
 
 ## License
 
-MIT License - See LICENSE file for details
-
----
-
-**Made with ❤️ for the AI community - Your Writing, Your Fingerprint, Your Identity**
+MIT License
