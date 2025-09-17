@@ -1699,6 +1699,93 @@ def get_cloud_storage_preference():
             print("❌ Please enter '1' for local only or '2' for local + cloud.")
             continue
 
+def calculate_text_complexity_score(text):
+    """
+    Calculate a comprehensive text complexity score based on multiple metrics.
+    
+    Args:
+        text (str): Input text to analyze
+        
+    Returns:
+        dict: Complexity metrics including overall score and component scores
+    """
+    if not text or not text.strip():
+        return {
+            'overall_score': 0,
+            'sentence_complexity': 0,
+            'vocabulary_complexity': 0,
+            'readability_score': 0,
+            'error': 'Empty text provided'
+        }
+    
+    try:
+        # Basic text statistics
+        words = text.split()
+        sentences = re.split(r'[.!?]+', text)
+        sentences = [s.strip() for s in sentences if s.strip()]
+        
+        if not words or not sentences:
+            return {
+                'overall_score': 0,
+                'sentence_complexity': 0,
+                'vocabulary_complexity': 0,
+                'readability_score': 0,
+                'error': 'Insufficient text for analysis'
+            }
+        
+        # 1. Sentence Complexity (average words per sentence)
+        avg_words_per_sentence = len(words) / len(sentences)
+        sentence_complexity = min(avg_words_per_sentence / 20, 1.0)  # Normalize to 0-1
+        
+        # 2. Vocabulary Complexity (unique words ratio and average word length)
+        unique_words = set(word.lower().strip('.,!?";:()[]{}') for word in words)
+        vocabulary_diversity = len(unique_words) / len(words)
+        avg_word_length = sum(len(word) for word in words) / len(words)
+        vocabulary_complexity = (vocabulary_diversity * 0.6) + (min(avg_word_length / 8, 1.0) * 0.4)
+        
+        # 3. Readability Score (simplified Flesch-like calculation)
+        syllable_count = 0
+        for word in words:
+            # Simple syllable counting heuristic
+            word_clean = re.sub(r'[^a-zA-Z]', '', word.lower())
+            if word_clean:
+                syllables = max(1, len(re.findall(r'[aeiouAEIOU]', word_clean)))
+                if word_clean.endswith('e'):
+                    syllables = max(1, syllables - 1)
+                syllable_count += syllables
+        
+        avg_syllables_per_word = syllable_count / len(words) if words else 0
+        readability_score = 1.0 - min((avg_syllables_per_word - 1) / 2, 1.0)  # Inverse complexity
+        
+        # 4. Overall Score (weighted combination)
+        overall_score = (
+            sentence_complexity * 0.4 +
+            vocabulary_complexity * 0.4 +
+            readability_score * 0.2
+        )
+        
+        return {
+            'overall_score': round(overall_score, 3),
+            'sentence_complexity': round(sentence_complexity, 3),
+            'vocabulary_complexity': round(vocabulary_complexity, 3),
+            'readability_score': round(readability_score, 3),
+            'avg_words_per_sentence': round(avg_words_per_sentence, 1),
+            'vocabulary_diversity': round(vocabulary_diversity, 3),
+            'avg_word_length': round(avg_word_length, 1),
+            'total_words': len(words),
+            'total_sentences': len(sentences),
+            'unique_words': len(unique_words)
+        }
+        
+    except Exception as e:
+        return {
+            'overall_score': 0,
+            'sentence_complexity': 0,
+            'vocabulary_complexity': 0,
+            'readability_score': 0,
+            'error': f'Error calculating complexity: {e}'
+        }
+
 def main():
     """Main execution function for enhanced deep analysis."""
     print("Style Transfer AI - Enhanced Deep Stylometry Analyzer")
