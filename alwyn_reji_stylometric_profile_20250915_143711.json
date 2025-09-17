@@ -1,0 +1,107 @@
+{
+  "profile_created": true,
+  "user_profile": {
+    "name": "alwyn reji",
+    "native_language": "malayalam",
+    "english_fluency": "Intermediate",
+    "other_languages": "english,hindi",
+    "nationality": "indian",
+    "cultural_background": "kerala",
+    "education_level": "nil",
+    "field_of_study": "nil",
+    "writing_experience": "creative",
+    "writing_frequency": "nil",
+    "profile_created": "2025-09-15T14:37:07.120333"
+  },
+  "metadata": {
+    "analysis_date": "2025-09-15T14:37:11.073090",
+    "analysis_method": "Google Gemini-1.5-flash",
+    "model_used": "gemini-1.5-flash",
+    "total_samples": 2,
+    "combined_text_length": 1804,
+    "file_info": [
+      {
+        "filename": "about_my_pet.txt",
+        "word_count": 126,
+        "character_count": 636
+      },
+      {
+        "filename": "about_my_pet_1.txt",
+        "word_count": 167,
+        "character_count": 1102
+      }
+    ],
+    "version": "4.2_enhanced_deep_with_profile"
+  },
+  "text_statistics": {
+    "word_count": 301,
+    "sentence_count": 21,
+    "paragraph_count": 6,
+    "character_count": 1804,
+    "avg_words_per_sentence": 14.33,
+    "avg_sentences_per_paragraph": 3.5,
+    "word_frequency": {
+      "and": 10,
+      "a": 8,
+      "her": 8,
+      "i": 6,
+      "she's": 6,
+      "me": 6,
+      "of": 6,
+      "she": 6,
+      "with": 5,
+      "my": 5,
+      "---": 4,
+      "the": 4,
+      "to": 4,
+      "pet": 4,
+      "is": 4,
+      "from": 3,
+      "even": 3,
+      "in": 3,
+      "when": 3,
+      "mango": 3
+    },
+    "punctuation_counts": {
+      "commas": 18,
+      "periods": 20,
+      "semicolons": 1,
+      "colons": 0,
+      "exclamations": 1,
+      "questions": 0,
+      "dashes": 4,
+      "parentheses": 0
+    },
+    "sentence_types": {
+      "declarative": 0,
+      "interrogative": 0,
+      "exclamatory": 0,
+      "imperative": 0
+    },
+    "unique_words": 209,
+    "lexical_diversity": 0.694
+  },
+  "readability_metrics": {
+    "flesch_reading_ease": 58.22,
+    "flesch_kincaid_grade": 8.7,
+    "coleman_liau_index": 11.38,
+    "avg_sentence_length": 14.33,
+    "avg_syllables_per_word": 1.58
+  },
+  "individual_analyses": [
+    {
+      "filename": "about_my_pet.txt",
+      "word_count": 126,
+      "character_count": 636,
+      "analysis": "Gemini API Error: 400 API key not valid. Please pass a valid API key. [reason: \"API_KEY_INVALID\"\ndomain: \"googleapis.com\"\nmetadata {\n  key: \"service\"\n  value: \"generativelanguage.googleapis.com\"\n}\n, locale: \"en-US\"\nmessage: \"API key not valid. Please pass a valid API key.\"\n]"
+    },
+    {
+      "filename": "about_my_pet_1.txt",
+      "word_count": 167,
+      "character_count": 1102,
+      "analysis": "Gemini API Error: 400 API key not valid. Please pass a valid API key. [reason: \"API_KEY_INVALID\"\ndomain: \"googleapis.com\"\nmetadata {\n  key: \"service\"\n  value: \"generativelanguage.googleapis.com\"\n}\n, locale: \"en-US\"\nmessage: \"API key not valid. Please pass a valid API key.\"\n]"
+    }
+  ],
+  "consolidated_analysis": "Gemini API Error: 400 API key not valid. Please pass a valid API key. [reason: \"API_KEY_INVALID\"\ndomain: \"googleapis.com\"\nmetadata {\n  key: \"service\"\n  value: \"generativelanguage.googleapis.com\"\n}\n, locale: \"en-US\"\nmessage: \"API key not valid. Please pass a valid API key.\"\n]",
+  "analysis_depth": "enhanced_deep_25_point"
+}
