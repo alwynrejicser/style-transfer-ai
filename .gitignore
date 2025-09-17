@@ -4,6 +4,11 @@
 api_keys.txt
 secrets.json
 
+# Firebase Credentials
+*firebase-adminsdk*.json
+*serviceAccountKey*.json
+firebase-credentials.json
+
 # Python
 __pycache__/
 *.py[cod]
