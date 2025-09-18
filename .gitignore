@@ -8,6 +8,7 @@ secrets.json
 *firebase-adminsdk*.json
 *serviceAccountKey*.json
 firebase-credentials.json
+config/firebase-credentials.json
 
 # Python
 __pycache__/

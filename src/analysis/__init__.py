@@ -1,0 +1,1 @@
+"""Core stylometry analysis, prompts, and metrics calculation."""

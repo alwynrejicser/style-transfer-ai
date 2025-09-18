@@ -65,17 +65,17 @@ db = None
 
 def get_user_model_choice():
     """Get user's choice of operation with main menu."""
-    print("\n" + "="*60)
-    print("STYLE TRANSFER AI - MAIN MENU")
-    print("="*60)
-    print("Choose your operation:")
-    print("1. Analyze Writing Style (Local Processing)")
-    print("2. Analyze Writing Style (Online Processing)")
-    print("3. Manage Firestore Data Retention")
-    print("0. Exit")
-    print("="*60)
-    
     while True:
+        print("\n" + "="*60)
+        print("STYLE TRANSFER AI - MAIN MENU")
+        print("="*60)
+        print("Choose your operation:")
+        print("1. Analyze Writing Style (Local Processing)")
+        print("2. Analyze Writing Style (Online Processing)")
+        print("3. Manage Firestore Data Retention")
+        print("0. Exit")
+        print("="*60)
+        
         try:
             main_choice = input("\nEnter your choice (0-3): ").strip()
             if main_choice == "0":
@@ -87,7 +87,7 @@ def get_user_model_choice():
                 return get_online_model_choice()
             elif main_choice == "3":
                 manage_firestore_data_retention()
-                # After data retention management, return to main menu
+                # After data retention management, loop to show the main menu again
                 continue
             else:
                 print("Invalid choice. Please enter 0, 1, 2, or 3.")
@@ -1941,7 +1941,74 @@ def main():
                     print("\n\nGoodbye!")
                     return  # Exit the program
 
-if __name__ == "__main__":
+
+# --- CLI Entrypoint for style-transfer-ai ---
+import argparse
+
+def cli_entrypoint():
+    parser = argparse.ArgumentParser(
+        description="Style Transfer AI - Advanced Stylometry Analysis CLI"
+    )
+    parser.add_argument(
+        "--interactive", action="store_true", help="Run in interactive menu mode (default)"
+    )
+    parser.add_argument(
+        "--analyze", nargs='+', metavar="FILE", help="Analyze one or more text files non-interactively"
+    )
+    parser.add_argument(
+        "--model", type=str, default=None, help="Specify model (e.g., gpt-oss:20b, gemma3:1b)"
+    )
+    parser.add_argument(
+        "--local", action="store_true", help="Force use of local model (Ollama)"
+    )
+    parser.add_argument(
+        "--cloud", action="store_true", help="Force use of cloud model (OpenAI/Gemini)"
+    )
+    parser.add_argument(
+        "--output", type=str, default=None, help="Base name for output files (no extension)"
+    )
+    parser.add_argument(
+        "--no-cloud-storage", action="store_true", help="Disable cloud (Firestore) storage for this run"
+    )
+    parser.add_argument(
+        "--data-retention", action="store_true", help="Open Firestore data retention management menu"
+    )
+    args = parser.parse_args()
+
+    if args.data_retention:
+        initialize_firebase()
+        manage_firestore_data_retention()
+        return
+
+    if args.analyze:
+        # Non-interactive batch analysis
+        initialize_firebase()
+        use_local = args.local or not args.cloud
+        model_name = args.model if args.model else ("gpt-oss:20b" if use_local else "openai")
+        api_type = None
+        api_client = None
+        processing_mode = "normal"
+        file_paths = args.analyze
+        print(f"Analyzing files: {file_paths}")
+        style_profile = create_enhanced_style_profile(file_paths, use_local, model_name, api_type, api_client, processing_mode)
+        if style_profile.get('profile_created'):
+            print("\nSaving profile in dual formats...")
+            save_result = save_style_profile_dual_format(
+                style_profile,
+                base_filename=args.output or "user_style_profile_enhanced",
+                use_cloud_storage=not args.no_cloud_storage
+            )
+            if save_result['success']:
+                print(f"SUCCESS: {save_result['message']}")
+            else:
+                print(f"ERROR: {save_result['error']}")
+            display_enhanced_results(style_profile)
+        else:
+            print("ERROR: Failed to create enhanced style profile")
+            print(f"Error: {style_profile.get('error', 'Unknown error')}")
+        return
+
+    # Default: interactive menu
     try:
         main()
     except KeyboardInterrupt:
@@ -1950,8 +2017,12 @@ if __name__ == "__main__":
         print(f"\nERROR: Unexpected error occurred: {e}")
         print("Please check your setup and try again.")
         print("Returning to main menu...\n")
-        # Try to restart the main function once more
         try:
             main()
         except:
             print("Unable to recover. Exiting program.")
+
+
+# Allow both python style_analyzer_enhanced.py and CLI entrypoint
+if __name__ == "__main__":
+    cli_entrypoint()

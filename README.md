@@ -1,8 +1,28 @@
-# Style Transfer AI - Enhanced Deep Stylometry Analyzer v4.5
+# Style Transfer AI - Enhanced Deep Stylometry Analyzer v1.0.0
 
-🎯 **Advanced stylometry analysis system with personalized linguistic fingerprinting and dual output formats**
+🎯 **Advanced stylometry analysis system with personalized linguistic fingerprinting and modular architecture**
+
+## 🚀 Quick Start
+
+**New to this project?** → See [SETUP.md](SETUP.md) for complete setup instructions
+
+```bash
+# 1. Check your configuration
+python check_config.py
+
+# 2. Install dependencies
+pip install -r install/requirements.txt
+
+# 3. Run the application
+python run.py
+```
 
 ## Features
+
+✅ **🏗️ Modular Architecture**:
+- **Clean separation**: Feature-based modules for maintainability
+- **Scalable design**: Easy to extend with new models or features
+- **Professional structure**: Industry-standard Python package organization
 
 ✅ **Personalized Stylometric Fingerprints**:
 - **Name-based file organization**: Files saved as `{name}_stylometric_profile_{timestamp}`
@@ -11,13 +31,14 @@
 - **Safe filename handling**: Automatic sanitization for filesystem compatibility
 
 ✅ **Performance Optimization**:
-- **GPT-OSS Dual Modes**: Turbo (faster, 2000 tokens) vs Normal (thorough, 3000 tokens)
-- **Intelligent timeout management**: Mode-specific processing times
+- **Multi-model support**: Local Ollama + Cloud APIs (OpenAI, Gemini)
+- **Intelligent processing**: Statistical-only or full deep analysis modes
 - **Resource-aware processing**: Optimized for different analysis depths
 
 ✅ **Hierarchical Model Selection**:
-- **Local Processing**: GPT-OSS 20B (advanced), Gemma 3:1B (fast)
-- **Online Processing**: OpenAI GPT-3.5-turbo, Google Gemini-1.5-flash
+- **Local Processing**: Ollama models (privacy-first, free)
+- **Cloud Processing**: OpenAI GPT-3.5-turbo, Google Gemini-1.5-flash
+- **Automatic fallback**: Graceful degradation when models unavailable
 - **Intuitive navigation**: Main menu → Sub-menus with back navigation
 - **Professional interface**: Clean, emoji-free design for serious analysis
 
@@ -98,6 +119,169 @@ Place your writing samples in the project directory:
 ### 4. Run Analysis
 ```bash
 python style_analyzer_enhanced.py
+```
+
+## CLI Installation & Usage
+
+### Automated Installation (Windows)
+
+For Windows users, use the provided batch files for easy setup:
+
+```bash
+# Full installation with dependency checks and Ollama detection
+install_cli.bat
+
+# Quick installation (minimal output)
+quick_install.bat
+```
+
+The installation script will:
+- ✅ Check Python and pip installation
+- ✅ Install all required dependencies
+- ✅ Set up the CLI tool globally
+- ✅ Test the installation
+- ✅ Check for Ollama and AI models
+- ✅ Provide next steps and usage examples
+
+### Manual Installation
+
+Install the package to use the `style-transfer-ai` command globally:
+
+```bash
+# Install in development mode (recommended for local development)
+pip install -e .
+
+# Or install normally
+pip install .
+```
+
+After installation, you can use the CLI from anywhere:
+
+```bash
+style-transfer-ai --help
+```
+
+### CLI Usage Examples
+
+#### Interactive Mode (Default)
+```bash
+# Run interactive menu (same as python style_analyzer_enhanced.py)
+style-transfer-ai
+style-transfer-ai --interactive
+```
+
+#### Batch Analysis
+```bash
+# Analyze single file
+style-transfer-ai --analyze sample.txt
+
+# Analyze multiple files
+style-transfer-ai --analyze file1.txt file2.txt file3.txt
+
+# Analyze with specific model
+style-transfer-ai --analyze sample.txt --model gpt-oss:20b
+
+# Force local processing
+style-transfer-ai --analyze sample.txt --local
+
+# Force cloud processing
+style-transfer-ai --analyze sample.txt --cloud
+```
+
+#### Custom Output
+```bash
+# Custom output filename base
+style-transfer-ai --analyze sample.txt --output "my_analysis"
+
+# Disable cloud storage for this run
+style-transfer-ai --analyze sample.txt --no-cloud-storage
+```
+
+#### Data Management
+```bash
+# Open Firestore data retention management
+style-transfer-ai --data-retention
+```
+
+### CLI Options Reference
+
+| Option | Description | Example |
+|--------|-------------|---------|
+| `--interactive` | Run in interactive menu mode (default) | `style-transfer-ai --interactive` |
+| `--analyze FILE [FILE ...]` | Analyze one or more text files | `style-transfer-ai --analyze text1.txt text2.txt` |
+| `--model MODEL` | Specify model (gpt-oss:20b, gemma3:1b, openai, gemini) | `style-transfer-ai --analyze file.txt --model gemma3:1b` |
+| `--local` | Force use of local Ollama models | `style-transfer-ai --analyze file.txt --local` |
+| `--cloud` | Force use of cloud models (OpenAI/Gemini) | `style-transfer-ai --analyze file.txt --cloud` |
+| `--output NAME` | Base name for output files (no extension) | `style-transfer-ai --analyze file.txt --output my_profile` |
+| `--no-cloud-storage` | Disable Firestore cloud storage for this run | `style-transfer-ai --analyze file.txt --no-cloud-storage` |
+| `--data-retention` | Open Firestore data retention management | `style-transfer-ai --data-retention` |
+| `--help` | Show help message and exit | `style-transfer-ai --help` |
+
+### Advanced CLI Workflows
+
+#### Research Pipeline
+```bash
+# Analyze academic papers with cloud processing
+style-transfer-ai --analyze paper1.txt paper2.txt --cloud --output "academic_style"
+
+# Quick analysis with local fast model
+style-transfer-ai --analyze draft.txt --local --model gemma3:1b
+```
+
+#### Batch Processing
+```bash
+# Analyze all text files in current directory (Windows PowerShell)
+Get-ChildItem *.txt | ForEach-Object { style-transfer-ai --analyze $_.Name --output $_.BaseName }
+
+# Analyze with privacy mode (no cloud storage)
+style-transfer-ai --analyze sensitive.txt --local --no-cloud-storage
+```
+
+#### Development & Testing
+```bash
+# Test different models on same content
+style-transfer-ai --analyze test.txt --model gpt-oss:20b --output "test_advanced"
+style-transfer-ai --analyze test.txt --model gemma3:1b --output "test_fast"
+```
+
+### CLI vs Interactive Mode
+
+| Feature | CLI Mode | Interactive Mode |
+|---------|----------|------------------|
+| **Speed** | Fast, direct analysis | Menu navigation required |
+| **Automation** | Perfect for scripts/batch | Manual operation |
+| **Customization** | Command-line arguments | Interactive prompts |
+| **User Experience** | Technical users | User-friendly menus |
+| **Integration** | CI/CD, automation tools | Stand-alone usage |
+
+### Troubleshooting CLI
+
+**Command not found after installation:**
+```bash
+# Verify installation
+pip list | grep style-transfer-ai
+
+# Reinstall in development mode
+pip uninstall style-transfer-ai
+pip install -e .
+```
+
+**Permission errors:**
+```bash
+# Use user installation
+pip install --user -e .
+
+# Or with elevated permissions (Windows)
+# Run PowerShell as Administrator, then install
+```
+
+**Path issues:**
+```bash
+# Check if Python Scripts directory is in PATH
+python -m site --user-base
+
+# Add to PATH if needed (Windows PowerShell)
+$env:PATH += ";$(python -m site --user-base)\Scripts"
 ```
 
 ## Key Workflow
