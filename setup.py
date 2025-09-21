@@ -1,24 +1,40 @@
 from setuptools import setup, find_packages
+import os
+
+# Read long description from README
+def read_long_description():
+    try:
+        with open("README.md", "r", encoding="utf-8") as fh:
+            return fh.read()
+    except FileNotFoundError:
+        return "Advanced stylometry analysis system with modular architecture for analyzing writing styles using AI models."
 
 setup(
     name="style-transfer-ai",
-    version="1.0.0",
+    version="1.1.0",
     description="Advanced stylometry analysis system with modular architecture",
-    author="Style Transfer AI Team",
+    long_description=read_long_description(),
+    long_description_content_type="text/markdown",
+    author="Alwyn Rejicser",
+    author_email="alwynrejicser@gmail.com",
+    url="https://github.com/alwynrejicser/style-transfer-ai",
+    download_url="https://github.com/alwynrejicser/style-transfer-ai/archive/v1.0.0.tar.gz",
+    license="MIT",
     packages=find_packages(),
+    include_package_data=True,
+    package_data={
+        "": ["*.md", "*.txt", "*.json"],
+    },
     install_requires=[
         "requests>=2.25.0",
         # Optional dependencies (users can install as needed)
-        # "firebase-admin>=6.0.0",  # For Firestore integration
         # "openai>=1.0.0",          # For OpenAI API
         # "google-generativeai",    # For Gemini API
     ],
     extras_require={
-        "cloud": ["firebase-admin>=6.0.0"],
         "openai": ["openai>=1.0.0"],
         "gemini": ["google-generativeai"],
         "all": [
-            "firebase-admin>=6.0.0",
             "openai>=1.0.0", 
             "google-generativeai"
         ]

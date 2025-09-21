@@ -203,7 +203,7 @@ style_comparison_{timestamp}.txt
 - Keep style profiles and generated content together
 
 ### **Backup:**
-- Save important generated content to cloud storage
+- Save important generated content to external storage
 - Keep style profile files for future reference
 - Regular cleanup of test/experimental files
 

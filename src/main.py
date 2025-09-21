@@ -28,7 +28,6 @@ def display_startup_banner():
     print("• 25-point deep stylometry analysis")
     print("• Multi-model support (Ollama, OpenAI, Gemini)")
     print("• Statistical readability metrics")
-    print("• Cloud storage integration (Firestore)")
     print("• Privacy-first local processing")
     print("• Comprehensive style profiling")
     print()
@@ -53,7 +52,6 @@ def check_system_requirements():
     # Check for optional dependencies
     optional_deps = {
         'requests': 'HTTP requests (required for OpenAI, Gemini)',
-        'firebase_admin': 'Firebase/Firestore integration',
         'openai': 'OpenAI API integration',
         'google.generativeai': 'Google Gemini integration'
     }

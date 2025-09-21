@@ -50,14 +50,8 @@ style-transfer-ai
 - **Dual output formats**: JSON (machine-readable) + TXT (human-readable)
 - **Advanced metrics**: Readability scores, lexical diversity, psychological profiling
 - **Statistical analysis**: Word frequencies, punctuation patterns, complexity indices
+- **Local storage**: Secure local file storage with timestamped profiles
 - Individual file analysis + consolidated profiling
-
-✅ **Cloud Storage Integration**:
-- **Firebase Firestore**: Optional cloud database storage for profiles
-- **Automatic backup**: Profiles saved locally AND in cloud (when configured)
-- **Cross-device access**: Access your stylometric profiles from anywhere
-- **Search and retrieval**: Query profiles by user name and creation date
-- **Privacy-first**: Cloud storage is optional, local-only mode still available
 
 ✅ **Privacy & Flexibility**:
 - Local processing for confidential content
@@ -98,19 +92,11 @@ ollama serve
    GEMINI_API_KEY = "your-gemini-api-key-here"  # Replace with your actual key
    ```
 
-**Firebase Firestore (Optional - Cloud Storage):**
-1. Create a Firebase project at [Firebase Console](https://console.firebase.google.com/)
-2. Enable Firestore Database
-3. Download service account JSON key
-4. Place the key file as `firebase-credentials.json` in project root
-5. Update project ID in the code (replace `'styler-24736'` with your project ID)
-6. See [FIREBASE_SETUP.md](FIREBASE_SETUP.md) for detailed instructions
-
 ### 2. Install Dependencies
 ```bash
 pip install -r requirements.txt
 # Or manually:
-pip install requests openai google-generativeai firebase-admin
+pip install requests openai google-generativeai
 ```
 
 ### 3. Prepare Your Text Samples
@@ -141,7 +127,7 @@ install\quick_install.bat
 The installation script will:
 - ✅ Check Python and pip installation
 - ✅ **Create isolated virtual environment**
-- ✅ **Install ALL AI dependencies** (OpenAI, Gemini, Firebase)
+- ✅ **Install ALL AI dependencies** (OpenAI, Gemini)
 - ✅ **Set up global CLI access** (adds to user PATH)
 - ✅ Test the installation
 - ✅ Check for Ollama and AI models
@@ -206,15 +192,6 @@ style-transfer-ai --analyze sample.txt --cloud
 ```bash
 # Custom output filename base
 style-transfer-ai --analyze sample.txt --output "my_analysis"
-
-# Disable cloud storage for this run
-style-transfer-ai --analyze sample.txt --no-cloud-storage
-```
-
-#### Data Management
-```bash
-# Open Firestore data retention management
-style-transfer-ai --data-retention
 ```
 
 ### CLI Options Reference
@@ -227,8 +204,6 @@ style-transfer-ai --data-retention
 | `--local` | Force use of local Ollama models | `style-transfer-ai --analyze file.txt --local` |
 | `--cloud` | Force use of cloud models (OpenAI/Gemini) | `style-transfer-ai --analyze file.txt --cloud` |
 | `--output NAME` | Base name for output files (no extension) | `style-transfer-ai --analyze file.txt --output my_profile` |
-| `--no-cloud-storage` | Disable Firestore cloud storage for this run | `style-transfer-ai --analyze file.txt --no-cloud-storage` |
-| `--data-retention` | Open Firestore data retention management | `style-transfer-ai --data-retention` |
 | `--help` | Show help message and exit | `style-transfer-ai --help` |
 
 ### Advanced CLI Workflows
@@ -247,8 +222,8 @@ style-transfer-ai --analyze draft.txt --local --model gemma3:1b
 # Analyze all text files in current directory (Windows PowerShell)
 Get-ChildItem *.txt | ForEach-Object { style-transfer-ai --analyze $_.Name --output $_.BaseName }
 
-# Analyze with privacy mode (no cloud storage)
-style-transfer-ai --analyze sensitive.txt --local --no-cloud-storage
+# Analyze with privacy mode (local only)
+style-transfer-ai --analyze sensitive.txt --local
 ```
 
 #### Development & Testing
@@ -372,7 +347,6 @@ style-transfer-ai/
 ├── IMPLEMENTATION.md                    # Detailed technical documentation
 ├── README.md                           # This file
 ├── futureimprov.md                     # Future improvement plans
-├── FIREBASE_SETUP.md                    # Firebase Firestore setup guide
 ├── requirements.txt                    # Python dependencies
 ├── .env.example                        # Environment configuration template
 ├── .gitignore                          # Git ignore for security
@@ -394,12 +368,6 @@ style-transfer-ai/
 - **Turbo Mode**: Quick analysis with optimized parameters
 - **Normal Mode**: Comprehensive deep analysis
 - User choice for processing speed vs thoroughness
-
-☁️ **Firebase Firestore Integration**:
-- **Cloud Database Storage**: Optional backup to Firebase Firestore
-- **Cross-Device Access**: Access profiles from any device
-- **Search & Retrieval**: Query profiles by user and date
-- **Privacy Maintained**: Local storage still default, cloud is optional
 
 🏗️ **Enhanced Architecture**:
 - Streamlined user profile collection (8 essential fields)

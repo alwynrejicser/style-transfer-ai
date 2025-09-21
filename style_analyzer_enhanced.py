@@ -25,7 +25,7 @@ Usage:
     python style_analyzer_enhanced.py
 
 Author: Style Transfer AI Team
-Version: 4.5 (Enhanced Deep Analysis Edition with GPT-OSS Turbo Mode)
+Version: 4.6 (Firebase-Free Local Edition)
 """
 
 import os
@@ -37,15 +37,6 @@ import glob
 import requests
 from datetime import datetime
 from collections import Counter
-
-# Firebase Admin SDK imports
-try:
-    import firebase_admin
-    from firebase_admin import credentials, firestore
-    FIREBASE_AVAILABLE = True
-except ImportError:
-    print("WARNING: Firebase Admin SDK not installed. Install with: pip install firebase-admin")
-    FIREBASE_AVAILABLE = False
 
 # Configuration
 OLLAMA_BASE_URL = "http://localhost:11434"
@@ -60,9 +51,6 @@ GEMINI_API_KEY = "your-gemini-api-key-here"  # Replace with your actual Gemini A
 GITHUB_API_KEY = "your-github-personal-access-token-here"  # Replace with your GitHub Personal Access Token
 GITHUB_USERNAME = "your-github-username"  # Replace with your GitHub username
 
-# Global Firebase database client
-db = None
-
 def get_user_model_choice():
     """Get user's choice of operation with main menu."""
     while True:
@@ -72,12 +60,11 @@ def get_user_model_choice():
         print("Choose your operation:")
         print("1. Analyze Writing Style (Local Processing)")
         print("2. Analyze Writing Style (Online Processing)")
-        print("3. Manage Firestore Data Retention")
         print("0. Exit")
         print("="*60)
         
         try:
-            main_choice = input("\nEnter your choice (0-3): ").strip()
+            main_choice = input("\nEnter your choice (0-2): ").strip()
             if main_choice == "0":
                 print("Goodbye!")
                 sys.exit(0)
@@ -85,12 +72,8 @@ def get_user_model_choice():
                 return get_local_model_choice()
             elif main_choice == "2":
                 return get_online_model_choice()
-            elif main_choice == "3":
-                manage_firestore_data_retention()
-                # After data retention management, loop to show the main menu again
-                continue
             else:
-                print("Invalid choice. Please enter 0, 1, 2, or 3.")
+                print("Invalid choice. Please enter 0, 1, or 2.")
         except KeyboardInterrupt:
             print("\n\nOperation cancelled by user. Goodbye!")
             sys.exit(0)
@@ -841,17 +824,15 @@ def sanitize_filename(name):
     
     return sanitized
 
-def save_style_profile_dual_format(style_profile, base_filename="user_style_profile_enhanced", use_cloud_storage=True):
+def save_style_profile_dual_format(style_profile, base_filename="user_style_profile_enhanced", use_cloud_storage=False):
     """
-    Save the style profile in both JSON and human-readable text formats,
-    and optionally store it in Cloud Firestore.
+    Save the style profile in both JSON and human-readable text formats locally.
     
     Args:
         style_profile (dict): The complete style profile data
         base_filename (str): Base filename without extension
-        use_cloud_storage (bool): Whether to save to cloud storage (Firestore)
+        use_cloud_storage (bool): Legacy parameter (ignored)
     """
-    global db
     
     try:
         # Extract user name from profile for personalized filename
@@ -873,52 +854,12 @@ def save_style_profile_dual_format(style_profile, base_filename="user_style_prof
         with open(txt_filename_local, 'w', encoding='utf-8') as f:
             f.write(human_readable_content)
         
-        # --- Cloud Firestore Storage ---
-        if use_cloud_storage and db:  # Only attempt if user wants cloud storage AND Firestore is available
-            try:
-                print("Attempting to store profile in Cloud Firestore...")
-                
-                # Prepare data for Firestore:
-                # The main style_profile dict directly represents the document data.
-                # Add the human-readable content as a new field.
-                firestore_document_data = style_profile.copy()
-                firestore_document_data['human_readable_report'] = human_readable_content
-                firestore_document_data['timestamp'] = timestamp
-                firestore_document_data['created_at'] = datetime.now()
-                
-                # Create user-specific document name
-                firestore_doc_name = f"{user_name}_profile_{timestamp}"
-                
-                # Add document with user-specific name to the 'stylometry_reports' collection
-                doc_ref = db.collection('stylometry_reports').document(firestore_doc_name)
-                doc_ref.set(firestore_document_data)
-                
-                print(f"SUCCESS: Profile stored in Cloud Firestore with user-specific name: {firestore_doc_name}")
-                return {
-                    'success': True,
-                    'json_file': json_filename_local,
-                    'txt_file': txt_filename_local,
-                    'firestore_doc_name': firestore_doc_name,  # Include the user-specific document name
-                    'message': f"Personal stylometric profile saved locally and in Firestore for {user_name}:\n• JSON: {json_filename_local}\n• TXT: {txt_filename_local}\n• Firestore Document: {firestore_doc_name}"
-                }
-            except Exception as e:
-                # If Firestore save fails, the local files are still created.
-                print(f"WARNING: Error storing profile in Firestore: {e}")
-                return {
-                    'success': True,  # Local save was successful
-                    'json_file': json_filename_local,
-                    'txt_file': txt_filename_local,
-                    'message': f"Personal stylometric profile saved locally for {user_name}:\n• JSON: {json_filename_local}\n• TXT: {txt_filename_local}\n(Firestore storage failed: {e})"
-                }
-        else:
-            # User chose local-only storage or Firestore not available
-            cloud_reason = "User selected local-only storage" if not use_cloud_storage else "Firestore not available"
-            return {
-                'success': True,
-                'json_file': json_filename_local,
-                'txt_file': txt_filename_local,
-                'message': f"Personal stylometric profile saved locally for {user_name}:\n• JSON: {json_filename_local}\n• TXT: {txt_filename_local}\n({cloud_reason})"
-            }
+        return {
+            'success': True,
+            'json_file': json_filename_local,
+            'txt_file': txt_filename_local,
+            'message': f"Personal stylometric profile saved locally for {user_name}:\n• JSON: {json_filename_local}\n• TXT: {txt_filename_local}"
+        }
         
     except Exception as e:
         return {
@@ -1024,7 +965,7 @@ def create_enhanced_style_profile(file_paths, use_local=True, model_name="gpt-os
             'total_samples': len(file_paths),
             'combined_text_length': len(combined_text),
             'file_info': file_info,
-            'version': '4.2_enhanced_deep_with_profile'
+            'version': '4.6_firebase_free_local'
         },
         'text_statistics': text_statistics,
         'readability_metrics': readability_metrics,
@@ -1214,491 +1155,6 @@ def display_enhanced_results(style_profile):
     
     print(f"\nYour enhanced deep style profile is ready for advanced text generation!")
 
-def initialize_firebase():
-    """
-    Initialize Firebase Admin SDK for Firestore operations.
-    
-    Returns:
-        bool: True if initialization successful, False otherwise
-    """
-    global db
-    
-    if not FIREBASE_AVAILABLE:
-        print("Firebase Admin SDK not available. Firestore operations will be skipped.")
-        return False
-    
-    try:
-        # Check if Firebase is already initialized
-        if db is not None:
-            return True
-        
-        # Try to load service account key from multiple possible locations
-        possible_paths = [
-            "path/to/your/serviceAccountKey.json",  # User should replace this
-            "styler-24736-firebase-adminsdk-fbsvc-af82326c3d.json",  # User's specific file
-            "firebase-credentials.json",
-            "serviceAccountKey.json",
-            os.path.join(os.getcwd(), "firebase-credentials.json"),
-            os.path.join(os.getcwd(), "serviceAccountKey.json"),
-            os.path.join(os.getcwd(), "styler-24736-firebase-adminsdk-fbsvc-af82326c3d.json")
-        ]
-        
-        # Check for environment variable
-        env_path = os.getenv('FIREBASE_CREDENTIALS_PATH')
-        if env_path:
-            possible_paths.insert(0, env_path)
-        
-        credentials_path = None
-        for path in possible_paths:
-            if os.path.exists(path):
-                credentials_path = path
-                break
-        
-        if not credentials_path:
-            print("WARNING: Firebase service account key not found.")
-            print("Please ensure you have downloaded your service account key JSON file")
-            print("and place it in one of these locations:")
-            for path in possible_paths:
-                print(f"  • {path}")
-            print("Or set the FIREBASE_CREDENTIALS_PATH environment variable.")
-            print("Firestore operations will be skipped.")
-            return False
-        
-        # Initialize Firebase Admin SDK
-        cred = credentials.Certificate(credentials_path)
-        firebase_admin.initialize_app(cred, {
-            'projectId': 'styler-24736',  # User should update this with their project ID
-        })
-        
-        # Get Firestore client
-        db = firestore.client()
-        print("SUCCESS: Firebase Admin SDK for Firestore initialized successfully.")
-        return True
-        
-    except Exception as e:
-        print(f"ERROR: Failed to initialize Firebase Admin SDK: {e}")
-        print("Firestore operations will be skipped.")
-        return False
-
-def retrieve_firestore_profile(document_id):
-    """
-    Retrieve a style profile from Firestore by document ID.
-    
-    Args:
-        document_id (str): Firestore document ID
-        
-    Returns:
-        dict: Profile data or error information
-    """
-    global db
-    
-    if not db:
-        return {
-            'success': False,
-            'error': 'Firestore not initialized'
-        }
-    
-    try:
-        doc_ref = db.collection('stylometry_reports').document(document_id)
-        doc = doc_ref.get()
-        
-        if doc.exists:
-            data = doc.to_dict()
-            return {
-                'success': True,
-                'profile_data': data,
-                'document_id': document_id
-            }
-        else:
-            return {
-                'success': False,
-                'error': f'Document {document_id} not found'
-            }
-    except Exception as e:
-        return {
-            'success': False,
-            'error': f'Error retrieving document: {e}'
-        }
-
-def manage_firestore_data_retention():
-    """
-    Main function for managing Firestore data retention.
-    Allows users to view, search, and delete their stored profiles.
-    """
-    global db
-    
-    if not db:
-        print("❌ Firestore is not initialized. Cannot access cloud data.")
-        return
-    
-    print("\n" + "="*60)
-    print("FIRESTORE DATA RETENTION MANAGEMENT")
-    print("="*60)
-    print("Manage your stored stylometric profiles:")
-    print("1. List all profiles")
-    print("2. Search profiles by user name")
-    print("3. Delete specific profile")
-    print("4. Delete all profiles for a user")
-    print("5. View profile details")
-    print("0. Return to main menu")
-    print("="*60)
-    
-    while True:
-        try:
-            choice = input("\nEnter your choice (0-5): ").strip()
-            
-            if choice == "0":
-                return
-            elif choice == "1":
-                list_all_profiles()
-            elif choice == "2":
-                search_profiles_by_user()
-            elif choice == "3":
-                delete_specific_profile()
-            elif choice == "4":
-                delete_user_profiles()
-            elif choice == "5":
-                view_profile_details()
-            else:
-                print("❌ Invalid choice. Please enter 0-5.")
-                
-        except KeyboardInterrupt:
-            print("\n\nReturning to main menu...")
-            return
-
-def list_all_profiles(limit=20):
-    """List all stylometric profiles in Firestore."""
-    global db
-    
-    try:
-        print(f"\n📋 Listing recent profiles (limit: {limit})...")
-        
-        # Get recent profiles ordered by creation date
-        query = (db.collection('stylometry_reports')
-                .order_by('created_at', direction=firestore.Query.DESCENDING)
-                .limit(limit))
-        
-        docs = query.get()
-        
-        if not docs:
-            print("No profiles found in Firestore.")
-            return
-        
-        print(f"\n📊 Found {len(docs)} profile(s):")
-        print("-" * 80)
-        
-        for i, doc in enumerate(docs, 1):
-            data = doc.to_dict()
-            user_name = data.get('user_profile', {}).get('name', 'Unknown')
-            timestamp = data.get('timestamp', 'Unknown')
-            created_at = data.get('created_at')
-            
-            created_str = created_at.strftime('%Y-%m-%d %H:%M:%S') if created_at else 'Unknown'
-            
-            print(f"{i}. Document: {doc.id}")
-            print(f"   User: {user_name}")
-            print(f"   Timestamp: {timestamp}")
-            print(f"   Created: {created_str}")
-            print("-" * 40)
-            
-    except Exception as e:
-        print(f"❌ Error listing profiles: {e}")
-
-def search_profiles_by_user():
-    """Search for profiles by user name."""
-    global db
-    
-    try:
-        user_name = input("\nEnter user name to search for: ").strip()
-        if not user_name:
-            print("❌ User name cannot be empty.")
-            return
-        
-        print(f"\n🔍 Searching for profiles by '{user_name}'...")
-        
-        # Query profiles for the specific user
-        query = (db.collection('stylometry_reports')
-                .where('user_profile.name', '==', user_name)
-                .order_by('created_at', direction=firestore.Query.DESCENDING))
-        
-        docs = query.get()
-        
-        if not docs:
-            print(f"No profiles found for user '{user_name}'.")
-            return
-        
-        print(f"\n📊 Found {len(docs)} profile(s) for '{user_name}':")
-        print("-" * 80)
-        
-        for i, doc in enumerate(docs, 1):
-            data = doc.to_dict()
-            timestamp = data.get('timestamp', 'Unknown')
-            created_at = data.get('created_at')
-            
-            created_str = created_at.strftime('%Y-%m-%d %H:%M:%S') if created_at else 'Unknown'
-            
-            print(f"{i}. Document: {doc.id}")
-            print(f"   Timestamp: {timestamp}")
-            print(f"   Created: {created_str}")
-            print("-" * 40)
-            
-    except Exception as e:
-        print(f"❌ Error searching profiles: {e}")
-
-def delete_specific_profile():
-    """Delete a specific profile by document ID."""
-    global db
-    
-    try:
-        doc_id = input("\nEnter document ID to delete: ").strip()
-        if not doc_id:
-            print("❌ Document ID cannot be empty.")
-            return
-        
-        # First, check if document exists
-        doc_ref = db.collection('stylometry_reports').document(doc_id)
-        doc = doc_ref.get()
-        
-        if not doc.exists:
-            print(f"❌ Document '{doc_id}' not found.")
-            return
-        
-        # Show document details before deletion
-        data = doc.to_dict()
-        user_name = data.get('user_profile', {}).get('name', 'Unknown')
-        timestamp = data.get('timestamp', 'Unknown')
-        
-        print(f"\n📄 Document details:")
-        print(f"   ID: {doc_id}")
-        print(f"   User: {user_name}")
-        print(f"   Timestamp: {timestamp}")
-        
-        # Confirm deletion
-        confirm = input(f"\n⚠️ Are you sure you want to delete this profile? (y/N): ").strip().lower()
-        if confirm not in ['y', 'yes']:
-            print("Deletion cancelled.")
-            return
-        
-        # Delete the document
-        doc_ref.delete()
-        print(f"✅ Profile '{doc_id}' deleted successfully.")
-        
-    except Exception as e:
-        print(f"❌ Error deleting profile: {e}")
-
-def delete_user_profiles():
-    """Delete all profiles for a specific user."""
-    global db
-    
-    try:
-        user_name = input("\nEnter user name to delete all profiles for: ").strip()
-        if not user_name:
-            print("❌ User name cannot be empty.")
-            return
-        
-        # First, find all profiles for the user
-        query = db.collection('stylometry_reports').where('user_profile.name', '==', user_name)
-        docs = query.get()
-        
-        if not docs:
-            print(f"No profiles found for user '{user_name}'.")
-            return
-        
-        print(f"\n📊 Found {len(docs)} profile(s) for '{user_name}':")
-        for doc in docs:
-            data = doc.to_dict()
-            timestamp = data.get('timestamp', 'Unknown')
-            print(f"   - {doc.id} (Created: {timestamp})")
-        
-        # Confirm deletion
-        confirm = input(f"\n⚠️ Are you sure you want to delete ALL {len(docs)} profile(s) for '{user_name}'? (y/N): ").strip().lower()
-        if confirm not in ['y', 'yes']:
-            print("Deletion cancelled.")
-            return
-        
-        # Delete all documents
-        deleted_count = 0
-        for doc in docs:
-            doc.reference.delete()
-            deleted_count += 1
-        
-        print(f"✅ Deleted {deleted_count} profile(s) for user '{user_name}'.")
-        
-    except Exception as e:
-        print(f"❌ Error deleting user profiles: {e}")
-
-def view_profile_details():
-    """View detailed information about a specific profile."""
-    global db
-    
-    try:
-        doc_id = input("\nEnter document ID to view: ").strip()
-        if not doc_id:
-            print("❌ Document ID cannot be empty.")
-            return
-        
-        # Get document
-        doc_ref = db.collection('stylometry_reports').document(doc_id)
-        doc = doc_ref.get()
-        
-        if not doc.exists:
-            print(f"❌ Document '{doc_id}' not found.")
-            return
-        
-        data = doc.to_dict()
-        
-        print(f"\n📄 Profile Details for: {doc_id}")
-        print("=" * 60)
-        
-        # User profile information
-        user_profile = data.get('user_profile', {})
-        print(f"👤 User: {user_profile.get('name', 'Unknown')}")
-        print(f"🌍 Location: {user_profile.get('location', 'Unknown')}")
-        print(f"🗣️ Native Language: {user_profile.get('native_language', 'Unknown')}")
-        print(f"🎓 Education: {user_profile.get('education_level', 'Unknown')}")
-        
-        # Timestamp information
-        timestamp = data.get('timestamp', 'Unknown')
-        created_at = data.get('created_at')
-        created_str = created_at.strftime('%Y-%m-%d %H:%M:%S') if created_at else 'Unknown'
-        
-        print(f"📅 Timestamp: {timestamp}")
-        print(f"📅 Created: {created_str}")
-        
-        # Statistical metrics
-        stats = data.get('statistical_metrics', {})
-        if stats:
-            print(f"\n📊 Statistical Metrics:")
-            print(f"   Total Words: {stats.get('total_words', 'N/A')}")
-            print(f"   Unique Words: {stats.get('unique_words', 'N/A')}")
-            print(f"   Lexical Diversity: {stats.get('lexical_diversity', 'N/A')}")
-            
-        # Individual analyses
-        analyses = data.get('individual_analyses', [])
-        if analyses:
-            print(f"\n📝 Analyzed Files ({len(analyses)}):")
-            for analysis in analyses:
-                filename = analysis.get('filename', 'Unknown')
-                word_count = analysis.get('word_count', 'N/A')
-                print(f"   - {filename}: {word_count} words")
-        
-        # Option to view full report
-        view_full = input(f"\nWould you like to see the full human-readable report? (y/N): ").strip().lower()
-        if view_full in ['y', 'yes']:
-            human_readable = data.get('human_readable_report', 'No report available')
-            print(f"\n📖 Full Report:")
-            print("=" * 60)
-            print(human_readable)
-        
-    except Exception as e:
-        print(f"❌ Error viewing profile details: {e}")
-
-def list_user_firestore_profiles(user_name, limit=10):
-    """
-    List all Firestore profiles for a specific user.
-    
-    Args:
-        user_name (str): User name to search for
-        limit (int): Maximum number of profiles to return
-        
-    Returns:
-        dict: List of profiles or error information
-    """
-    global db
-    
-    if not db:
-        return {
-            'success': False,
-            'error': 'Firestore not initialized'
-        }
-    
-    try:
-        # Query profiles for the user, ordered by creation date
-        query = (db.collection('stylometry_reports')
-                .where('user_profile.name', '==', user_name)
-                .order_by('created_at', direction=firestore.Query.DESCENDING)
-                .limit(limit))
-        
-        docs = query.get()
-        
-        profiles = []
-        for doc in docs:
-            data = doc.to_dict()
-            profiles.append({
-                'document_id': doc.id,
-                'user_name': data.get('user_profile', {}).get('name', 'Unknown'),
-                'created_at': data.get('created_at'),
-                'timestamp': data.get('timestamp'),
-                'word_count': data.get('metadata', {}).get('combined_text_length', 0),
-                'samples': data.get('metadata', {}).get('total_samples', 0)
-            })
-        
-        return {
-            'success': True,
-            'profiles': profiles,
-            'count': len(profiles)
-        }
-        
-    except Exception as e:
-        return {
-            'success': False,
-            'error': f'Error listing profiles: {e}'
-        }
-
-def get_cloud_storage_preference():
-    """
-    Ask user if they want to save profiles to cloud storage (Firestore).
-    
-    Returns:
-        tuple: (use_cloud_storage: bool, message: str)
-    """
-    global db
-    
-    print("\n" + "=" * 70)
-    print("CLOUD STORAGE OPTION")
-    print("=" * 70)
-    print("Your stylometric profile can be saved in two ways:")
-    print("\n📁 LOCAL STORAGE (Default):")
-    print("  • Saves files on your computer only")
-    print("  • Complete privacy - data never leaves your device")
-    print("  • JSON + TXT formats for easy access")
-    
-    if db:  # Only show cloud option if Firebase is initialized
-        print("\n☁️  CLOUD + LOCAL STORAGE:")
-        print("  • Saves locally AND backs up to Firebase Firestore")
-        print("  • Access profiles from any device")
-        print("  • Search and organize profiles online")
-        print("  • Automatic cloud backup for data protection")
-        print("  • Still maintains local copies for offline access")
-    else:
-        print("\n☁️  CLOUD STORAGE:")
-        print("  • Not available (Firebase not configured)")
-        print("  • See FIREBASE_SETUP.md for setup instructions")
-    
-    print("\n" + "=" * 70)
-    
-    if not db:
-        print("Cloud storage unavailable. Using local storage only.")
-        return False, "Local storage only (Firebase not configured)"
-    
-    while True:
-        print("\nChoose storage option:")
-        print("1. Local only (recommended for privacy)")
-        print("2. Local + Cloud backup (recommended for accessibility)")
-        print("")
-        
-        choice = input("Enter your choice (1-2): ").strip()
-        
-        if choice == "1":
-            print("✅ Selected: Local storage only")
-            return False, "Local storage only selected"
-        elif choice == "2":
-            print("✅ Selected: Local + Cloud storage")
-            return True, "Local + Cloud storage selected"
-        else:
-            print("❌ Please enter '1' for local only or '2' for local + cloud.")
-            continue
-
 def calculate_text_complexity_score(text):
     """
     Calculate a comprehensive text complexity score based on multiple metrics.
@@ -1791,10 +1247,6 @@ def main():
     print("Style Transfer AI - Enhanced Deep Stylometry Analyzer")
     print("=" * 70)
     
-    # Initialize Firebase Admin SDK early in the process
-    print("\nInitializing Firebase Firestore connection...")
-    firebase_initialized = initialize_firebase()
-    
     while True:  # Main program loop
         try:
             # Get user's model choice
@@ -1863,10 +1315,6 @@ def main():
             # Ask about cleaning up old reports
             cleanup_old_reports()
             
-            # Ask user about cloud storage preference
-            use_cloud_storage, storage_message = get_cloud_storage_preference()
-            print(f"\n{storage_message}")
-            
             # Get file paths from user
             file_paths = get_file_paths()
             
@@ -1880,10 +1328,9 @@ def main():
                 style_profile = create_enhanced_style_profile(file_paths, use_local, None, api_type, api_client, processing_mode)
             
             if style_profile['profile_created']:
-                # Save the profile in dual formats
-                storage_type = "local + cloud" if use_cloud_storage else "local only"
-                print(f"\nSaving profile in dual formats ({storage_type})...")
-                save_result = save_style_profile_dual_format(style_profile, use_cloud_storage=use_cloud_storage)
+                # Save the profile locally only
+                print(f"\nSaving profile locally...")
+                save_result = save_style_profile_dual_format(style_profile, use_cloud_storage=False)
                 
                 if save_result['success']:
                     print(f"SUCCESS: {save_result['message']}")
@@ -1967,22 +1414,10 @@ def cli_entrypoint():
     parser.add_argument(
         "--output", type=str, default=None, help="Base name for output files (no extension)"
     )
-    parser.add_argument(
-        "--no-cloud-storage", action="store_true", help="Disable cloud (Firestore) storage for this run"
-    )
-    parser.add_argument(
-        "--data-retention", action="store_true", help="Open Firestore data retention management menu"
-    )
     args = parser.parse_args()
-
-    if args.data_retention:
-        initialize_firebase()
-        manage_firestore_data_retention()
-        return
 
     if args.analyze:
         # Non-interactive batch analysis
-        initialize_firebase()
         use_local = args.local or not args.cloud
         model_name = args.model if args.model else ("gpt-oss:20b" if use_local else "openai")
         api_type = None
@@ -1992,11 +1427,11 @@ def cli_entrypoint():
         print(f"Analyzing files: {file_paths}")
         style_profile = create_enhanced_style_profile(file_paths, use_local, model_name, api_type, api_client, processing_mode)
         if style_profile.get('profile_created'):
-            print("\nSaving profile in dual formats...")
+            print("\nSaving profile locally...")
             save_result = save_style_profile_dual_format(
                 style_profile,
                 base_filename=args.output or "user_style_profile_enhanced",
-                use_cloud_storage=not args.no_cloud_storage
+                use_cloud_storage=False
             )
             if save_result['success']:
                 print(f"SUCCESS: {save_result['message']}")

@@ -9,7 +9,6 @@ import os
 from ..config.settings import PROCESSING_MODES
 from ..analysis.analyzer import create_enhanced_style_profile
 from ..storage.local_storage import list_local_profiles, load_local_profile, cleanup_old_reports, save_style_profile_locally
-from ..storage.firestore import manage_firestore_data_retention, initialize_firebase, save_to_firestore
 from .model_selection import (
     select_model_interactive, 
     reset_model_selection, 
@@ -47,10 +46,9 @@ def display_main_menu():
     print("6. Style Comparison & Analysis")
     print("")
     print("DATA MANAGEMENT:")
-    print("7. Manage Cloud Data (Firestore)")
-    print("8. Cleanup Old Reports")
-    print("9. Switch Analysis Model")
-    print("10. Check Configuration")
+    print("7. Cleanup Old Reports")
+    print("8. Switch Analysis Model")
+    print("9. Check Configuration")
     print("0. Exit")
     print("="*60)
 
@@ -129,21 +127,6 @@ def handle_analyze_style(processing_mode='enhanced'):
             if save_result['success']:
                 print(f"✓ {save_result['message']}")
                 
-                # Prompt user for cloud storage
-                cloud_save = input("\nWould you like to save this analysis to the cloud (Firestore)? (y/n): ").strip().lower()
-                if cloud_save == 'y':
-                    print("\nInitializing cloud storage...")
-                    if initialize_firebase():
-                        print("Saving to cloud...")
-                        cloud_result = save_to_firestore(style_profile)
-                        if cloud_result['success']:
-                            print(f"✓ Successfully saved to cloud: {cloud_result.get('document_name', 'Unknown')}")
-                        else:
-                            print(f"✗ Failed to save to cloud: {cloud_result.get('error', 'Unknown error')}")
-                    else:
-                        print("✗ Cloud storage not available. See setup instructions for Firebase configuration.")
-                else:
-                    print("Skipping cloud save.")
             else:
                 print(f"✗ Failed to save results: {save_result.get('error', 'Unknown error')}")
         
@@ -295,16 +278,6 @@ def handle_cleanup_reports():
         print(f"Error during cleanup: {e}")
     
     input("\nPress Enter to continue...")
-
-
-def handle_cloud_data_management():
-    """Handle cloud data management (Firestore)."""
-    print("\nInitializing Firestore...")
-    
-    if initialize_firebase():
-        manage_firestore_data_retention()
-    else:
-        print("Firestore not available. Please check your Firebase configuration.")
 
 
 def handle_check_configuration():
@@ -985,17 +958,14 @@ def run_main_menu():
                 handle_style_comparison()
                 
             elif choice == "7":
-                handle_cloud_data_management()
-                
-            elif choice == "8":
                 handle_cleanup_reports()
                 
-            elif choice == "9":
+            elif choice == "8":
                 reset_model_selection()
                 print("\nModel selection reset. Please choose a new model:")
                 select_model_interactive()
                 
-            elif choice == "10":
+            elif choice == "9":
                 handle_check_configuration()
                 
             else:

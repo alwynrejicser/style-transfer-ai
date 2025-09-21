@@ -2,23 +2,20 @@ from setuptools import setup, find_packages
 
 setup(
     name="style-transfer-ai",
-    version="1.0.0",
+    version="1.1.0",
     description="Advanced stylometry analysis system with modular architecture",
     author="Style Transfer AI Team",
     packages=find_packages(),
     install_requires=[
         "requests>=2.25.0",
         # Optional dependencies (users can install as needed)
-        # "firebase-admin>=6.0.0",  # For Firestore integration
         # "openai>=1.0.0",          # For OpenAI API
         # "google-generativeai",    # For Gemini API
     ],
     extras_require={
-        "cloud": ["firebase-admin>=6.0.0"],
         "openai": ["openai>=1.0.0"],
         "gemini": ["google-generativeai"],
         "all": [
-            "firebase-admin>=6.0.0",
             "openai>=1.0.0", 
             "google-generativeai"
         ]

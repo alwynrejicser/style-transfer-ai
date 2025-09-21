@@ -124,28 +124,15 @@ def get_cloud_storage_preference():
     Get user's preference for cloud storage.
     
     Returns:
-        bool: True if user wants cloud storage, False otherwise
+        bool: Always returns False (local storage only)
     """
     print("\n" + "="*50)
     print("STORAGE PREFERENCE")
     print("="*50)
-    print("Choose storage option:")
-    print("1. Local storage only")
-    print("2. Local + Cloud storage (Firestore)")
+    print("Using local storage only")
     print("="*50)
     
-    while True:
-        try:
-            choice = input("\nEnter your choice (1-2): ").strip()
-            if choice == "1":
-                return False
-            elif choice == "2":
-                return True
-            else:
-                print("Invalid choice. Please enter 1 or 2.")
-        except KeyboardInterrupt:
-            print("\n\nOperation cancelled by user.")
-            return False
+    return False
 
 
 def ask_to_continue():

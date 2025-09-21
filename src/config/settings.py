@@ -33,11 +33,6 @@ AVAILABLE_MODELS = {
     }
 }
 
-# Firebase Configuration
-FIREBASE_PROJECT_ID = "styler-24736"  # Replace with your Firebase project ID
-FIREBASE_CREDENTIALS_PATH = "config/firebase-credentials.json"
-FIRESTORE_COLLECTION = "stylometry_reports"
-
 # Processing Modes
 PROCESSING_MODES = {
     "enhanced": {

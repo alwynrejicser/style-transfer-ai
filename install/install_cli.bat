@@ -42,14 +42,14 @@ if exist requirements.txt (
     if %errorlevel% neq 0 (
         echo WARNING: Some dependencies failed to install
         echo You may need to install them manually:
-        echo   pip install requests openai google-generativeai firebase-admin
+        echo   pip install requests openai google-generativeai
         echo.
     ) else (
         echo ✓ Dependencies installed successfully
     )
 ) else (
 ::echo Installing core dependencies manually...
-    pip install requests openai google-generativeai firebase-admin
+    pip install requests openai google-generativeai
     if %errorlevel% neq 0 (
         echo ERROR: Failed to install dependencies
         pause
@@ -90,7 +90,7 @@ if %errorlevel% neq 0 (
 
 :: Install dependencies in virtual environment
 echo Installing dependencies in virtual environment...
-pip install requests openai google-generativeai firebase-admin
+pip install requests openai google-generativeai
 
 :: Install the CLI tool
 echo Installing Style Transfer AI CLI...

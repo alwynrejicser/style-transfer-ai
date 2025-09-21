@@ -60,7 +60,7 @@ def test_imports():
             test_results.append((f"Analysis.{module}", False, str(e)))
     
     # Test storage modules
-    storage_modules = ['local_storage', 'firestore']
+    storage_modules = ['local_storage']
     for module in storage_modules:
         try:
             exec(f"from src.storage import {module}")
@@ -236,7 +236,7 @@ def print_test_summary(all_results):
     
     if import_failures:
         print("• Install missing dependencies:")
-        print("  pip install requests openai firebase-admin google-generativeai")
+        print("  pip install requests openai google-generativeai")
     
     if passed_tests == total_tests:
         print("• ✓ All tests passed! The modular refactoring is complete.")

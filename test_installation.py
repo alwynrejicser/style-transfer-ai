@@ -23,7 +23,7 @@ def test_dependencies():
     print("\n📦 Testing core dependencies...")
     
     core_deps = ['requests']
-    optional_deps = ['openai', 'google.generativeai', 'firebase_admin']
+    optional_deps = ['openai', 'google.generativeai']
     
     success = True
     
@@ -135,7 +135,7 @@ def main():
         print("\n🔧 Next steps:")
         print("1. Install missing dependencies: pip install -r install/requirements.txt")
         print("2. Or install as package: pip install -e .")
-        print("3. For optional features, install: pip install openai google-generativeai firebase-admin")
+        print("3. For optional features, install: pip install openai google-generativeai")
     
     return all(results)
 

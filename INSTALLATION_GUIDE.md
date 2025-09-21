@@ -24,7 +24,7 @@ cd style-transfer-ai
 pip install requests
 
 # Optional: Install all features
-pip install requests openai google-generativeai firebase-admin
+pip install requests openai google-generativeai
 ```
 
 ### **3. Run the Application**
@@ -208,7 +208,7 @@ Once installed, you can:
 - ✅ Analyze your writing style with 25-point framework
 - ✅ Generate content in your style
 - ✅ Transfer writing to different styles
-- ✅ Save results locally or in cloud (Firestore)
+- ✅ Save results locally
 - ✅ Work with virtually any text file format
 
 **Need help?** Check the `documentation/` folder for detailed guides!

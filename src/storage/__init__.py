@@ -1,1 +1,1 @@
-"""Storage backends for local files and Firestore."""
+"""Storage backends for local files."""
