@@ -10,7 +10,7 @@ Hey! Here's how to get Style Transfer AI running on your machine:
 
 ---
 
-## 🚀 **Method 1: Quick Install (Recommended)**
+## 🚀 **Method 1: Simple Install (RECOMMENDED)**
 
 ### **1. Clone the Repository**
 ```bash
@@ -18,30 +18,27 @@ git clone https://github.com/alwynrejicser/style-transfer-ai.git
 cd style-transfer-ai
 ```
 
-### **2. Run Automated Installation**
-
-**Windows:**
+### **2. Install Dependencies Only (Safest Method)**
 ```bash
-# Double-click or run in PowerShell
-install\quick_install.bat
+# Install just the required packages
+pip install requests
+
+# Optional: Install all features
+pip install requests openai google-generativeai firebase-admin
 ```
 
-**Linux/Mac:**
+### **3. Run the Application**
 ```bash
-# Make sure you have Python 3.7+
-python3 -m pip install -e .
+# This always works
+python run.py
 ```
 
-### **3. Test Installation**
-```bash
-style-transfer-ai --version
-```
-
-If you see version info, you're ready! 🎉
+### **4. Test It Works**
+If you see the main menu, you're ready! 🎉
 
 ---
 
-## 🛠️ **Method 2: Manual Installation**
+## 🛠️ **Method 2: Advanced Install (Optional)**
 
 ### **1. Clone Repository**
 ```bash
@@ -49,7 +46,7 @@ git clone https://github.com/alwynrejicser/style-transfer-ai.git
 cd style-transfer-ai
 ```
 
-### **2. Create Virtual Environment (Optional but Recommended)**
+### **2. Create Virtual Environment (Recommended)**
 ```bash
 python -m venv .venv
 
@@ -62,22 +59,22 @@ source .venv/bin/activate
 
 ### **3. Install Dependencies**
 ```bash
-# Core dependencies (required)
+# Basic method (always works)
 pip install requests
 
-# For all features (optional):
+# Or install from requirements file
 pip install -r install/requirements.txt
 
-# Or install as package:
+# Only if basic method works, try package install:
 pip install -e .
 ```
 
-### **4. Test It Works**
+### **4. Run the Application**
 ```bash
-# Method 1: Direct run
+# Method 1: Direct run (always works)
 python run.py
 
-# Method 2: CLI command (if installed as package)
+# Method 2: CLI command (only if pip install -e . worked)
 style-transfer-ai
 ```
 
@@ -152,7 +149,20 @@ The app comes with sample text files in `default text/` folder - perfect for tes
 
 ## 🔧 **Troubleshooting**
 
-### **Common Issues & Solutions**
+### **Your Friend's Error: "Not a valid editable requirement"**
+
+This happens when pip can't install the package. **Solution:**
+
+```bash
+# Don't use pip install -e .
+# Instead, just install dependencies:
+pip install requests
+
+# Then run directly:
+python run.py
+```
+
+### **Other Common Issues & Solutions**
 
 **❌ "Python not found"**
 - Install Python from [python.org](https://python.org/downloads/)
@@ -160,20 +170,19 @@ The app comes with sample text files in `default text/` folder - perfect for tes
 
 **❌ "pip not found"**
 - Python 3.7+ includes pip automatically
-- Try: `python -m pip` instead of `pip`
+- Try: `python -m pip install requests` instead of `pip install requests`
 
 **❌ "Module not found"**
-- Make sure you're in the project directory
-- Try: `pip install -e .` to install in development mode
+- Make sure you're in the correct directory (`cd style-transfer-ai`)
+- Use `python run.py` instead of `style-transfer-ai`
+
+**❌ "No such file or directory"**
+- Make sure you cloned the repository correctly
+- Check you're in the right folder: `ls` (Linux/Mac) or `dir` (Windows)
 
 **❌ "Ollama connection failed"**
-- Install Ollama from [ollama.ai](https://ollama.ai/download)
-- Run `ollama serve` in a separate terminal
-- Pull a model: `ollama pull gemma2:2b`
-
-**❌ "No text files found"**
-- Check `default text/` folder exists
-- Or use your own .txt files when prompted
+- This is OK! The app works without Ollama
+- Choose "Statistical Analysis" or install Ollama later
 
 ---
 

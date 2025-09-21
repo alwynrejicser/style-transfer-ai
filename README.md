@@ -4,20 +4,20 @@
 
 ## 🚀 Quick Start
 
-**New to this project?** → See [INSTALLATION_GUIDE.md](INSTALLATION_GUIDE.md) for step-by-step setup
+**Getting installation errors?** → See [QUICK_FIX_INSTALLATION.md](QUICK_FIX_INSTALLATION.md) 
+
+**Need detailed setup?** → See [INSTALLATION_GUIDE.md](INSTALLATION_GUIDE.md)
 
 ```bash
-# Quick Installation (Windows)
-install\quick_install.bat
-
-# Or Manual Installation
+# Simple Method (Works for everyone)
 git clone https://github.com/alwynrejicser/style-transfer-ai.git
 cd style-transfer-ai
-pip install -e .
+pip install requests
+python run.py
 
-# Run the application
+# Advanced Method (May need troubleshooting)
+pip install -e .
 style-transfer-ai
-# Or: python run.py
 ```
 
 ## Features
