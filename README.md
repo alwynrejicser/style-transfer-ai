@@ -1,31 +1,55 @@
-# Style Transfer AI - Enhanced Deep Stylometry Analyzer v1.0.0
+# Style Transfer AI - Enhanced Deep Stylometry Analyzer v1.1.0
 
-🎯 **Advanced stylometry analysis system with personalized linguistic fingerprinting and modular architecture**
+🎯 **Firebase-Free Local Edition - Advanced stylometry analysis system with personalized linguistic fingerprinting and privacy-first local processing**
 
 ## 🚀 Quick Start
 
-**Getting installation errors?** → See [QUICK_FIX_INSTALLATION.md](QUICK_FIX_INSTALLATION.md) 
+### Method 1: One-Line Installation (Recommended)
+```powershell
+# Complete installation + PATH setup (PowerShell)
+iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/alwynrejicser/style-transfer-ai/main/install_one_line.ps1'))
+```
 
-**Need detailed setup?** → See [INSTALLATION_GUIDE.md](INSTALLATION_GUIDE.md)
-
+### Method 2: Standard PyPI Installation
 ```bash
-# Simple Method (Works for everyone)
+# Install from PyPI
+pip install style-transfer-ai
+
+# Add to PATH (Windows PowerShell)
+$p="$env:APPDATA\Python\Python313\Scripts";$c=[Environment]::GetEnvironmentVariable("PATH","User");if($c -notlike "*$p*"){[Environment]::SetEnvironmentVariable("PATH","$c;$p","User");Write-Host "✅ PATH configured! Restart terminal."}else{Write-Host "✅ Already configured!"}
+
+# Run globally
+style-transfer-ai
+```
+
+### Method 3: Development Installation
+```bash
+# Clone and run directly
 git clone https://github.com/alwynrejicser/style-transfer-ai.git
 cd style-transfer-ai
 pip install requests
 python run.py
-
-# Advanced Method (May need troubleshooting)
-pip install -e .
-style-transfer-ai
 ```
 
+**📋 Quick Setup Notes:**
+- **No dependencies required** - Package installs everything automatically
+- **Local processing** - Works offline with Ollama models (optional)
+- **Privacy-first** - No cloud dependencies, no Firebase
+- **Global CLI** - Use `style-transfer-ai` from anywhere after installation
+
 ## Features
+
+✅ **🔒 Privacy-First Architecture**:
+- **Local processing**: Complete analysis without internet (Ollama models)
+- **No cloud dependencies**: Firebase completely removed from v1.1.0
+- **Zero data sharing**: Your text never leaves your machine
+- **Optional cloud models**: OpenAI/Gemini support when needed
 
 ✅ **🏗️ Modular Architecture**:
 - **Clean separation**: Feature-based modules for maintainability
 - **Scalable design**: Easy to extend with new models or features
 - **Professional structure**: Industry-standard Python package organization
+- **PyPI distribution**: Simple `pip install style-transfer-ai` installation
 
 ✅ **Personalized Stylometric Fingerprints**:
 - **Name-based file organization**: Files saved as `{name}_stylometric_profile_{timestamp}`
@@ -37,6 +61,7 @@ style-transfer-ai
 - **Multi-model support**: Local Ollama + Cloud APIs (OpenAI, Gemini)
 - **Intelligent processing**: Statistical-only or full deep analysis modes
 - **Resource-aware processing**: Optimized for different analysis depths
+- **One-line installation**: Complete setup with single PowerShell command
 
 ✅ **Hierarchical Model Selection**:
 - **Local Processing**: Ollama models (privacy-first, free)
@@ -62,14 +87,29 @@ style-transfer-ai
 
 ## Quick Start
 
-### 1. Setup Requirements
+### 1. Install Style Transfer AI
 
-#### For Local Models (Recommended)
+**Option A: One-Line Complete Setup (Recommended)**
+```powershell
+# PowerShell one-liner - installs everything + configures PATH
+iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/alwynrejicser/style-transfer-ai/main/install_one_line.ps1'))
+```
+
+**Option B: Standard Installation**
 ```bash
-# Install Ollama
-# Visit: https://ollama.ai/download
+# Install from PyPI
+pip install style-transfer-ai
 
-# Pull the models
+# Configure PATH (Windows) - restart terminal after this
+$p="$env:APPDATA\Python\Python313\Scripts";$c=[Environment]::GetEnvironmentVariable("PATH","User");if($c -notlike "*$p*"){[Environment]::SetEnvironmentVariable("PATH","$c;$p","User");Write-Host "✅ PATH configured! Restart terminal."}else{Write-Host "✅ Already configured!"}
+```
+
+### 2. Optional: Local Models for Privacy (Recommended)
+
+#### For Local Processing (Privacy-First)
+```bash
+# Install Ollama from https://ollama.ai/download
+# Then pull the models:
 ollama pull gpt-oss:20b      # Advanced model
 ollama pull gemma3:1b        # Fast model
 
@@ -77,89 +117,68 @@ ollama pull gemma3:1b        # Fast model
 ollama serve
 ```
 
-#### For Cloud APIs (Optional)
-**OpenAI API:**
-1. Get your API key from [OpenAI Platform](https://platform.openai.com/api-keys)
-2. Replace placeholder in the code:
-   ```python
-   OPENAI_API_KEY = "your-openai-api-key-here"  # Replace with your actual key
-   ```
+### 3. Optional: Cloud APIs (If Needed)
 
-**Google Gemini API:**
-1. Get your API key from [Google AI Studio](https://aistudio.google.com/app/apikey)
-2. Replace placeholder in the code:
-   ```python
-   GEMINI_API_KEY = "your-gemini-api-key-here"  # Replace with your actual key
-   ```
+#### OpenAI API (Optional)
+- Get your API key from [OpenAI Platform](https://platform.openai.com/api-keys)
+- Enter when prompted by the application
 
-### 2. Install Dependencies
-```bash
-pip install -r requirements.txt
-# Or manually:
-pip install requests openai google-generativeai
-```
-
-### 3. Prepare Your Text Samples
-Place your writing samples in the project directory:
-- `about_my_pet.txt`
-- `about_my _pet_1.txt`
-- Or modify file paths in the code
+#### Google Gemini API (Optional)
+- Get your API key from [Google AI Studio](https://aistudio.google.com/app/apikey)
+- Enter when prompted by the application
 
 ### 4. Run Analysis
 ```bash
-python style_analyzer_enhanced.py
+# Run from anywhere (after PATH setup)
+style-transfer-ai
+
+# Or in development mode
+python run.py
 ```
+
+**🎯 No additional dependencies required!** The package automatically installs all necessary components.
 
 ## CLI Installation & Usage
 
-### Automated Installation (Windows)
+### One-Line Installation (Recommended)
 
-For Windows users, use the provided batch files for easy setup:
-
-```bash
-# Full installation with dependency checks and Ollama detection
-install\install_cli.bat
-
-# Quick installation (minimal output)
-install\quick_install.bat
+**Complete Setup:**
+```powershell
+# PowerShell - installs package + configures PATH automatically
+iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/alwynrejicser/style-transfer-ai/main/install_one_line.ps1'))
 ```
 
-The installation script will:
-- ✅ Check Python and pip installation
-- ✅ **Create isolated virtual environment**
-- ✅ **Install ALL AI dependencies** (OpenAI, Gemini)
-- ✅ **Set up global CLI access** (adds to user PATH)
-- ✅ Test the installation
-- ✅ Check for Ollama and AI models
-- ✅ Provide next steps and usage examples
-
-**Post-Installation:**
-- Restart your command prompt for global access
-- Use `style-transfer-ai` from any directory
-- All AI models and APIs ready to use
+**PATH-Only Setup (after manual pip install):**
+```powershell
+# If you already ran: pip install style-transfer-ai
+$p="$env:APPDATA\Python\Python313\Scripts";$c=[Environment]::GetEnvironmentVariable("PATH","User");if($c -notlike "*$p*"){[Environment]::SetEnvironmentVariable("PATH","$c;$p","User");Write-Host "✅ PATH configured! Restart terminal."}else{Write-Host "✅ Already configured!"}
+```
 
 ### Manual Installation
 
-Install the package to use the `style-transfer-ai` command globally:
+**Standard PyPI Installation:**
+```bash
+# Install the package
+pip install style-transfer-ai
 
+# For global access, restart terminal after PATH setup above
+style-transfer-ai
+```
+
+**Development Installation:**
 ```bash
 # From project root directory
 pip install -e .
-```
 
-**For Global Access (Recommended):**
-The installation automatically adds the CLI to your PATH. If you encounter issues, the virtual environment path is added automatically. You can now use the CLI from anywhere:
-
-```bash
-# Works from any directory
+# Use globally
 style-transfer-ai
-
-# Run from anywhere on your system
-cd C:\
-style-transfer-ai --help
 ```
 
-**Note**: The CLI automatically changes to the correct project directory when run, so it works regardless of your current working directory.
+**Post-Installation:**
+- ✅ Restart command prompt/terminal for PATH changes
+- ✅ Use `style-transfer-ai` from any directory
+- ✅ No additional dependencies needed
+- ✅ Local processing ready (add Ollama models for privacy)
 
 ### CLI Usage Examples
 
@@ -341,20 +360,38 @@ The analyzer will automatically:
 
 ```
 style-transfer-ai/
-├── style_analyzer_enhanced.py           # Enhanced deep analyzer v4.5 (25-point framework)
-├── .github/
-│   └── copilot-instructions.md         # Development guidelines for GitHub Copilot
-├── IMPLEMENTATION.md                    # Detailed technical documentation
-├── README.md                           # This file
-├── futureimprov.md                     # Future improvement plans
-├── requirements.txt                    # Python dependencies
-├── .env.example                        # Environment configuration template
-├── .gitignore                          # Git ignore for security
-├── about_my_pet.txt                    # Sample text file 1
-├── about_my_pet_1.txt                  # Sample text file 2
-└── {name}_stylometric_profile_*.json   # Your personalized analysis (JSON)
-└── {name}_stylometric_profile_*.txt    # Your personalized analysis (TXT)
+├── src/                                 # Main package source
+│   ├── main.py                         # CLI entry point
+│   ├── analysis/                       # Analysis modules
+│   ├── models/                         # AI model clients
+│   ├── menu/                          # Interactive menu system
+│   ├── config/                        # Configuration management
+│   ├── storage/                       # Local storage only
+│   └── utils/                         # Utility functions
+├── install/                           # Installation scripts
+│   ├── install_cli.bat               # Windows batch installer
+│   ├── quick_install.bat             # Quick setup
+│   ├── requirements.txt              # Dependencies
+│   └── setup.py                      # Package configuration
+├── install_one_line.ps1              # One-line PowerShell installer
+├── path_one_line.txt                 # PATH-only setup command
+├── style_analyzer_enhanced.py        # Legacy analyzer (still functional)
+├── run.py                            # Development entry point
+├── setup.py                          # Main package setup
+├── README.md                         # This file
+├── default text/                     # Sample text files
+│   ├── about_my_pet.txt             # Sample analysis file
+│   └── about_my_pet_1.txt           # Additional samples
+├── documentation/                    # Technical documentation
+└── {name}_stylometric_profile_*.json # Your personalized analysis output
+└── {name}_stylometric_profile_*.txt  # Human-readable analysis output
 ```
+
+**Key Changes in v1.1.0:**
+- ✅ **Firebase completely removed** - No cloud storage dependencies
+- ✅ **Local storage only** - All data stays on your machine
+- ✅ **One-line installers** - Simplified deployment
+- ✅ **Clean PyPI package** - No unnecessary dependencies
 
 ## What's New
 
@@ -496,11 +533,20 @@ Contributions welcome! Please ensure:
 
 ## Version History
 
-- **v4.5** (Current): Personalized stylometric fingerprints, GPT-OSS performance modes
-- **v4.0**: Enhanced deep analysis framework (25-point system)
-- **v3.0**: Hierarchical model selection with local/online options
-- **v2.0**: Dual output formats (JSON + TXT)
-- **v1.0**: Basic stylometry analysis
+- **v1.1.0** (Current): **Firebase-Free Local Edition**
+  - ✅ Complete Firebase removal for privacy-first architecture
+  - ✅ PyPI distribution with simplified installation
+  - ✅ One-line PowerShell installers for Windows
+  - ✅ Automatic PATH configuration
+  - ✅ Local-only storage with no cloud dependencies
+  - ✅ Clean package structure without unnecessary dependencies
+
+- **v1.0.0**: **Enhanced Production Edition**
+  - ✅ Personalized stylometric fingerprints, GPT-OSS performance modes
+  - ✅ Enhanced deep analysis framework (25-point system)
+  - ✅ Hierarchical model selection with local/online options
+  - ✅ Dual output formats (JSON + TXT)
+  - ✅ Modular architecture with professional CLI
 
 ## License
 
