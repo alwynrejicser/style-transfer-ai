@@ -4,17 +4,20 @@
 
 ## 🚀 Quick Start
 
-**New to this project?** → See [SETUP.md](SETUP.md) for complete setup instructions
+**New to this project?** → See [INSTALLATION_GUIDE.md](INSTALLATION_GUIDE.md) for step-by-step setup
 
 ```bash
-# 1. Check your configuration
-python check_config.py
+# Quick Installation (Windows)
+install\quick_install.bat
 
-# 2. Install dependencies
-pip install -r install/requirements.txt
+# Or Manual Installation
+git clone https://github.com/alwynrejicser/style-transfer-ai.git
+cd style-transfer-ai
+pip install -e .
 
-# 3. Run the application
-python run.py
+# Run the application
+style-transfer-ai
+# Or: python run.py
 ```
 
 ## Features

@@ -45,8 +45,8 @@ setup(
     ],
     keywords="stylometry, text analysis, writing style, natural language processing, AI",
     project_urls={
-        "Documentation": "https://github.com/yourusername/style-transfer-ai/wiki",
-        "Source": "https://github.com/yourusername/style-transfer-ai",
-        "Tracker": "https://github.com/yourusername/style-transfer-ai/issues",
+        "Documentation": "https://github.com/alwynrejicser/style-transfer-ai/wiki",
+        "Source": "https://github.com/alwynrejicser/style-transfer-ai",
+        "Tracker": "https://github.com/alwynrejicser/style-transfer-ai/issues",
     },
 )
