@@ -14,7 +14,7 @@ from ..utils.user_profile import get_user_profile
 from ..config.settings import TIMESTAMP_FORMAT
 
 
-def analyze_style(text_to_analyze, use_local=True, model_name=None, api_type=None, api_client=None, user_profile=None, processing_mode="normal"):
+def analyze_style(text_to_analyze, use_local=True, model_name=None, api_type=None, api_client=None, user_profile=None, processing_mode="enhanced"):
     """
     Performs enhanced deep stylometry analysis using specified AI model.
     
@@ -25,7 +25,7 @@ def analyze_style(text_to_analyze, use_local=True, model_name=None, api_type=Non
         api_type (str): 'openai' or 'gemini' for cloud APIs
         api_client: Pre-initialized API client (for OpenAI or Gemini)
         user_profile (dict): User background information for context
-        processing_mode (str): 'normal' for thorough analysis, 'turbo' for faster processing
+        processing_mode (str): 'enhanced' for thorough analysis, 'statistical' for faster processing
         
     Returns:
         str: Structured deep stylometric analysis for style profiling
@@ -48,7 +48,7 @@ def analyze_style(text_to_analyze, use_local=True, model_name=None, api_type=Non
         return "Error: Unknown API type or configuration"
 
 
-def create_enhanced_style_profile(file_paths, use_local=True, model_name=None, api_type=None, api_client=None, processing_mode="normal"):
+def create_enhanced_style_profile(file_paths, use_local=True, model_name=None, api_type=None, api_client=None, processing_mode="enhanced"):
     """
     Creates an enhanced comprehensive style profile from multiple text samples.
     
@@ -58,7 +58,7 @@ def create_enhanced_style_profile(file_paths, use_local=True, model_name=None, a
         model_name (str): The specific model to use (for local models)
         api_type (str): 'openai' or 'gemini' for cloud APIs
         api_client: Pre-initialized API client (for OpenAI or Gemini)
-        processing_mode (str): 'normal' for thorough analysis, 'turbo' for faster processing
+        processing_mode (str): 'enhanced' for thorough analysis, 'statistical' for faster processing
         
     Returns:
         dict: Enhanced consolidated style profile with deep analysis

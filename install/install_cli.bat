@@ -48,7 +48,7 @@ if exist requirements.txt (
         echo ✓ Dependencies installed successfully
     )
 ) else (
-    echo Installing core dependencies manually...
+::echo Installing core dependencies manually...
     pip install requests openai google-generativeai firebase-admin
     if %errorlevel% neq 0 (
         echo ERROR: Failed to install dependencies
@@ -57,6 +57,40 @@ if exist requirements.txt (
     )
 )
 echo.
+
+:: Change to project root directory (parent of install folder)
+cd ..
+if not exist "src\" (
+    echo ERROR: Cannot find project source directory
+    echo Make sure you're running this from the install folder
+    pause
+    exit /b 1
+)
+
+:: Create virtual environment if it doesn't exist
+if not exist ".venv\" (
+    echo Creating virtual environment...
+    python -m venv .venv
+    if %errorlevel% neq 0 (
+        echo ERROR: Failed to create virtual environment
+        pause
+        exit /b 1
+    )
+    echo ✓ Virtual environment created
+)
+
+:: Activate virtual environment
+echo Activating virtual environment...
+call .venv\Scripts\activate.bat
+if %errorlevel% neq 0 (
+    echo ERROR: Failed to activate virtual environment
+    pause
+    exit /b 1
+)
+
+:: Install dependencies in virtual environment
+echo Installing dependencies in virtual environment...
+pip install requests openai google-generativeai firebase-admin
 
 :: Install the CLI tool
 echo Installing Style Transfer AI CLI...
@@ -71,20 +105,37 @@ if %errorlevel% neq 0 (
 echo ✓ CLI tool installed successfully!
 echo.
 
+:: Add virtual environment to user PATH
+echo Configuring global access...
+for /f "tokens=2*" %%A in ('reg query "HKCU\Environment" /v PATH 2^>nul') do set "UserPath=%%B"
+if not defined UserPath set "UserPath="
+
+:: Check if our path is already in PATH
+echo %UserPath% | findstr /C:"%CD%\.venv\Scripts" >nul
+if %errorlevel% neq 0 (
+    echo Adding virtual environment to user PATH...
+    if defined UserPath (
+        setx PATH "%UserPath%;%CD%\.venv\Scripts"
+    ) else (
+        setx PATH "%CD%\.venv\Scripts"
+    )
+    echo ✓ PATH updated for global access
+    echo NOTE: You may need to restart your command prompt for PATH changes to take effect
+) else (
+    echo ✓ Virtual environment already in PATH
+)
+
 :: Test the installation
 echo Testing CLI installation...
-style-transfer-ai --help >nul 2>&1
+.venv\Scripts\style-transfer-ai.exe --help >nul 2>&1
 if %errorlevel% neq 0 (
-    echo WARNING: CLI command not found in PATH
-    echo You may need to add Python Scripts directory to your PATH
-    echo.
-    echo To find your Python Scripts directory:
-    python -c "import site; print(site.getusersitepackages().replace('site-packages', 'Scripts'))"
+    echo WARNING: CLI test failed
+    echo Try: .venv\Scripts\style-transfer-ai.exe
     echo.
 ) else (
     echo ✓ CLI command working correctly!
     echo.
-    echo You can now use: style-transfer-ai
+    echo You can now use: style-transfer-ai (after restarting command prompt)
 )
 
 :: Check for Ollama

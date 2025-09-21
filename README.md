@@ -129,37 +129,48 @@ For Windows users, use the provided batch files for easy setup:
 
 ```bash
 # Full installation with dependency checks and Ollama detection
-install_cli.bat
+install\install_cli.bat
 
 # Quick installation (minimal output)
-quick_install.bat
+install\quick_install.bat
 ```
 
 The installation script will:
 - ✅ Check Python and pip installation
-- ✅ Install all required dependencies
-- ✅ Set up the CLI tool globally
+- ✅ **Create isolated virtual environment**
+- ✅ **Install ALL AI dependencies** (OpenAI, Gemini, Firebase)
+- ✅ **Set up global CLI access** (adds to user PATH)
 - ✅ Test the installation
 - ✅ Check for Ollama and AI models
 - ✅ Provide next steps and usage examples
+
+**Post-Installation:**
+- Restart your command prompt for global access
+- Use `style-transfer-ai` from any directory
+- All AI models and APIs ready to use
 
 ### Manual Installation
 
 Install the package to use the `style-transfer-ai` command globally:
 
 ```bash
-# Install in development mode (recommended for local development)
+# From project root directory
 pip install -e .
-
-# Or install normally
-pip install .
 ```
 
-After installation, you can use the CLI from anywhere:
+**For Global Access (Recommended):**
+The installation automatically adds the CLI to your PATH. If you encounter issues, the virtual environment path is added automatically. You can now use the CLI from anywhere:
 
 ```bash
+# Works from any directory
+style-transfer-ai
+
+# Run from anywhere on your system
+cd C:\
 style-transfer-ai --help
 ```
+
+**Note**: The CLI automatically changes to the correct project directory when run, so it works regardless of your current working directory.
 
 ### CLI Usage Examples
 

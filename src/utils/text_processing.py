@@ -66,6 +66,46 @@ def sanitize_filename(name):
     return sanitized
 
 
+def sanitize_topic_for_filename(topic):
+    """
+    Sanitize a topic/subject for use in filenames.
+    
+    Args:
+        topic (str): The content topic or subject
+        
+    Returns:
+        str: Sanitized filename-safe topic string
+    """
+    if not topic or not topic.strip():
+        return "general_topic"
+    
+    # Remove or replace invalid filename characters
+    sanitized = re.sub(r'[<>:"/\\|?*]', '', topic)
+    
+    # Replace spaces and special characters with underscores
+    sanitized = re.sub(r'[\s\-\.,;:!?]+', '_', sanitized)
+    
+    # Remove any remaining problematic characters
+    sanitized = re.sub(r'[^\w_]', '', sanitized)
+    
+    # Remove multiple consecutive underscores
+    sanitized = re.sub(r'_+', '_', sanitized)
+    
+    # Remove leading/trailing underscores
+    sanitized = sanitized.strip('_')
+    
+    # Limit length to reasonable filename size (shorter for topics)
+    max_topic_length = min(MAX_FILENAME_LENGTH, 50)
+    sanitized = sanitized[:max_topic_length] if len(sanitized) > max_topic_length else sanitized
+    
+    # Ensure it's not empty after sanitization
+    if not sanitized:
+        sanitized = "general_topic"
+    
+    # Convert to lowercase for consistency
+    return sanitized.lower()
+
+
 def count_syllables(word):
     """Count syllables in a word using vowel patterns."""
     word = word.lower()

@@ -181,6 +181,10 @@ def cli_entry_point():
     Command-line interface entry point.
     This function is called when the module is run as a script.
     """
+    # Change to the project root directory to ensure relative paths work
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    project_root = os.path.dirname(script_dir)
+    os.chdir(project_root)
     main()
 
 

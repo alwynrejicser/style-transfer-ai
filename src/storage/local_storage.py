@@ -67,14 +67,19 @@ def cleanup_old_reports(patterns=None):
     try:
         import glob
         
-        for pattern in patterns:
-            files = glob.glob(pattern)
-            for file in files:
-                try:
-                    os.remove(file)
-                    deleted_count += 1
-                except Exception as e:
-                    print(f"Warning: Could not delete {file}: {e}")
+        # Check both main directory and stylometry fingerprints directory
+        directories_to_check = [".", "stylometry fingerprints"]
+        
+        for directory in directories_to_check:
+            for pattern in patterns:
+                search_pattern = pattern if directory == "." else os.path.join(directory, pattern)
+                files = glob.glob(search_pattern)
+                for file in files:
+                    try:
+                        os.remove(file)
+                        deleted_count += 1
+                    except Exception as e:
+                        print(f"Warning: Could not delete {file}: {e}")
         
         return {
             'success': True,
@@ -102,21 +107,30 @@ def list_local_profiles(pattern="*_stylometric_profile_*.json"):
     try:
         import glob
         
-        files = glob.glob(pattern)
+        # Look for profiles in both the main directory and the stylometry fingerprints directory
+        patterns_to_check = [
+            pattern,  # Main directory
+            os.path.join("stylometry fingerprints", pattern)  # Stylometry fingerprints directory
+        ]
+        
         profiles = []
         
-        for file in files:
-            try:
-                stat = os.stat(file)
-                profiles.append({
-                    'filename': file,
-                    'size': stat.st_size,
-                    'modified': datetime.fromtimestamp(stat.st_mtime).strftime("%Y-%m-%d %H:%M:%S")
-                })
-            except Exception:
-                continue
+        for search_pattern in patterns_to_check:
+            files = glob.glob(search_pattern)
+            for file in files:
+                try:
+                    stat = os.stat(file)
+                    profiles.append({
+                        'filename': file,
+                        'size': stat.st_size,
+                        'modified': datetime.fromtimestamp(stat.st_mtime).strftime("%Y-%m-%d %H:%M:%S")
+                    })
+                except Exception:
+                    continue
         
-        return sorted(profiles, key=lambda x: x['modified'], reverse=True)
+        # Remove duplicates (in case a file exists in both locations) and sort
+        unique_profiles = {p['filename']: p for p in profiles}.values()
+        return sorted(unique_profiles, key=lambda x: x['modified'], reverse=True)
         
     except Exception:
         return []

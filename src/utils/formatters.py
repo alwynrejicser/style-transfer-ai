@@ -183,9 +183,16 @@ def save_dual_format(style_profile, base_filename, user_name="Anonymous_User"):
     Returns:
         tuple: (json_filename, txt_filename)
     """
+    import os
+    
+    # Create stylometry fingerprints directory if it doesn't exist
+    fingerprints_dir = "stylometry fingerprints"
+    if not os.path.exists(fingerprints_dir):
+        os.makedirs(fingerprints_dir)
+    
     timestamp = datetime.now().strftime(TIMESTAMP_FORMAT)
-    json_filename = f"{user_name}_stylometric_profile_{timestamp}.json"
-    txt_filename = f"{user_name}_stylometric_profile_{timestamp}.txt"
+    json_filename = os.path.join(fingerprints_dir, f"{user_name}_stylometric_profile_{timestamp}.json")
+    txt_filename = os.path.join(fingerprints_dir, f"{user_name}_stylometric_profile_{timestamp}.txt")
     
     # Save JSON format
     with open(json_filename, 'w', encoding='utf-8') as f:
